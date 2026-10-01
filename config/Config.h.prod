@@ -1,0 +1,67 @@
+#ifndef CONFIG_PROD_H
+#define CONFIG_PROD_H
+
+#include <Arduino.h>
+
+/**
+ * @file Config.h.prod
+ * @brief Production configuration injecting credentials & URLs via PlatformIO build flags / Docker environment variables.
+ */
+
+#ifndef WIFI_SSID
+#define WIFI_SSID ""
+#endif
+
+#ifndef WIFI_PASSWORD
+#define WIFI_PASSWORD ""
+#endif
+
+#ifndef BACKEND_URL
+#define BACKEND_URL "https://api.production-smarthouse.com/v1"
+#endif
+
+#ifndef API_KEY
+#define API_KEY ""
+#endif
+
+struct AppConfigProd {
+    // WiFi Configuration injected at compile time
+    const char* wifiSsid = WIFI_SSID;
+    const char* wifiPassword = WIFI_PASSWORD;
+
+    // Backend Server & API Configuration injected at compile time
+    const char* backendUrl = BACKEND_URL;
+    const char* apiKey = API_KEY;
+    
+    // API Endpoints
+    const char* loginEndpoint = "/auth/door/unlock";
+    const char* incidentEndpoint = "/alerts/incident";
+    const char* telemetryEndpoint = "/sensors/environment";
+    const char* commandEndpoint = "/appliances/status";
+
+    // Pin Configurations
+    uint8_t doorRelayPin = 5;
+    uint8_t doorBuzzerPin = 18;
+
+    uint8_t flameSensorPin = 34;
+    uint8_t gasSensorPin = 35;
+    int gasThreshold = 400;
+    uint8_t alarmBuzzerPin = 19;
+    uint8_t alarmLedPin = 21;
+
+    uint8_t dhtPin = 4;
+    uint8_t dhtType = 11;
+    uint8_t rainSensorPin = 32;
+    int rainThreshold = 500;
+
+    uint8_t lightRelayPin = 12;
+    uint8_t fanRelayPin = 13;
+
+    // Timing & Intervals (ms)
+    unsigned long telemetryIntervalMs = 10000;
+    unsigned long pollCommandsIntervalMs = 3000;
+    unsigned long hazardCheckIntervalMs = 500;
+    unsigned long doorUnlockDurationMs = 5000;
+};
+
+#endif // CONFIG_PROD_H
