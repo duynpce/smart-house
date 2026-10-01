@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  firmware-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smart-house-firmware-builder
+    env_file:
+      - .env
+    environment:
+      - WIFI_SSID=${WIFI_SSID:-DefaultHomeWiFi}
+      - WIFI_PASSWORD=${WIFI_PASSWORD:-DefaultPassword}
+      - BACKEND_URL=${BACKEND_URL:-https://api.your-backend.com/v1}
+      - API_KEY=${API_KEY:-default_device_api_key}
+    volumes:
+      # Mount current workspace directory so built firmware bin files are saved locally (.pio/build/)
+      - ./:/workspace
+    command: pio run -e esp32-prod
